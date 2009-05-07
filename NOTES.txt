@@ -1,0 +1,14 @@
+RECIPE
+
+* To create a new bsdlabel to whole disk:
+
+  bsdlabel -w B ad4
+
+* To read a bsdlabel of whole disk. And keep it for later.
+
+  bsdlabel ad4
+  bsdlabel ad4 > /tmp/disklabel
+
+* To write a bsdlabel to disk
+
+  bsdlabel -R ad4 /tmp/disklabel
