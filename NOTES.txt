@@ -1,8 +1,8 @@
 RECIPE
 
-* To create a new bsdlabel to whole disk:
+* To create a new bsdlabel to whole disk and include boot strap code:
 
-  bsdlabel -w B ad4
+  bsdlabel -w -B ad4
 
 * To read a bsdlabel of whole disk. And keep it for later.
 
@@ -12,3 +12,28 @@ RECIPE
 * To write a bsdlabel to disk
 
   bsdlabel -R ad4 /tmp/disklabel
+
+* Create gmirror volume
+
+  gmirror load
+  gmirror label root ad6a ad8a
+  newfs /dev/mirror/root
+  mount /dev/mirror/root /mnt
+
+* Copy existing root volume
+
+  dump -L -0 -f- / | (cd /mnt && restore -r -v -f-)
+
+* Let gmirror/zfs load at boot time:
+
+  echo 'geom_mirror_load="YES"' >>/mnt/boot/loader.conf
+  echo 'zfs_load="YES"' >>/mnt/boot/loader.conf
+  echo 'zfs=enable="YES" >> /mnt/etc/rc.conf
+
+
+* Let root be mounted from /dev/mirror/root:
+
+  cp -p /mnt/etc/fstab /mnt/etc/fstab.orig
+  sed -e "s;dev/ad4s1a;dev/mirror/root;" \
+    </mnt/etc/fstab.orig >/mnt/etc/fstab
+

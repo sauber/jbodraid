@@ -23,16 +23,16 @@
 {
   # Each line of input is: diskname  disksize
   # Initialize whole disk table for each disk
-  diskslice[$1,"a"]=0;  # Root
-  diskslice[$1,"b"]=0;  # Swap
-  diskslice[$1,"c"]=$2; # Overlap
-  diskslice[$1,"d"]=0;  # Data
-  diskslice[$1,"e"]=0;  # Data
-  diskslice[$1,"f"]=0;  # Data
-  diskslice[$1,"g"]=0;  # Data
-  diskslice[$1,"h"]=$2; # Free space
-  diskname[NR]=$1;      # Name of disk by position
-  DiskNr=NR;            # Total number of disks available
+  diskslice[$1,"a"]=0;     # Root
+  diskslice[$1,"b"]=0;     # Swap
+  diskslice[$1,"c"]=$2;    # Overlap
+  diskslice[$1,"d"]=0;     # Data
+  diskslice[$1,"e"]=0;     # Data
+  diskslice[$1,"f"]=0;     # Data
+  diskslice[$1,"g"]=0;     # Data
+  diskslice[$1,"h"]=$2-16; # Free space, first 16 sectors for bootblock
+  diskname[NR]=$1;         # Name of disk by position
+  DiskNr=NR;               # Total number of disks available
 }
 
 END{
