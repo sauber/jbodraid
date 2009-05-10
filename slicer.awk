@@ -36,10 +36,10 @@
 }
 
 END{
-  # Default size of root disk is 1
-  if ( rootsize == "" ) rootsize=1;
-  # Default size of swap disk is 20
-  if ( swapsize == "" ) swapsize=20;
+  # Default size of root disk is 1GB
+  if ( rootsize == "" ) rootsize=1024*1024*1024/512;
+  # Default size of swap disk is 0
+  if ( swapsize == "" ) swapsize=0;
   # Generate initial cache of free disk space
   diskfreesort();
   # Assign disks to root, data and swap volumes
@@ -56,6 +56,7 @@ END{
 }
 
 # Maintain a list of disks that still has free space in array sorted[].
+# For ZFS there must be at least 64 MB free on a slice.
 #
 function diskfreesort(forswap,     free,i,d,j,m,n,e) {
   # Create a list of disks that has free space.
@@ -63,7 +64,8 @@ function diskfreesort(forswap,     free,i,d,j,m,n,e) {
   for (i in diskname) {
     delete sorted[i];
     d=diskname[i];
-    if ( diskslice[d,"h"] > 0 ) {     # h must have free space
+    minsize=64*1024*1024/512
+    if ( diskslice[d,"h"] > minsize ) {     # h must have enough free space
       # Check that at least one slice is free
       if ( diskslice[d,"d"] == 0 ) free[d]=diskslice[d,"h"];
       if ( diskslice[d,"e"] == 0 ) free[d]=diskslice[d,"h"];
