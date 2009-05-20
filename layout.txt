@@ -1,0 +1,25 @@
+DISK SLICE TABLE
+Disk name,     a    b    c    d    e    f    g    h
+Disk ad14,  20971520    0 976771055 488397152 467402367    0    0    0
+Disk ad12,  20971520    0 1953525168 488397152 467402367    0    0 976754113
+Disk  ad8,     0    0 488397168 488397152    0    0    0    0
+Disk  ad6,     0    0 488397168 488397152    0    0    0    0
+
+ROOT VOLUME TABLE
+  root, layout=gmirror, numslice=2, slicesize=20971520, volsize=20971520
+        slices=ad12a ad14a
+
+SWAP VOLUME TABLE
+  swap, layout=concat, numslice= slicesize=*, volsize=0
+        slices=
+
+DATA VOLUME TABLE
+  data1, layout=raidz1, numslice=4, slicesize=488397152, volsize=1465191456
+         slices=ad14d ad6d ad8d ad12d 
+  data2, layout=mirror, numslice=2, slicesize=467402367, volsize=467402367
+         slices=ad14e ad12e 
+
+FREE VOLUME TABLE
+  root, layout=concat, numslice=1 slicesize=*, volsize=976754113
+        slices=ad12h 
+

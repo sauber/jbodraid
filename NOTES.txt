@@ -37,3 +37,10 @@ RECIPE
   sed -e "s;dev/ad4s1a;dev/mirror/root;" \
     </mnt/etc/fstab.orig >/mnt/etc/fstab
 
+# Reboot, replace disks, update disk table with new disk names
+
+# Create zfs storage
+
+  zpool create data raidz1 ad6a ad8a ad12a ad14a
+  zpool add -f data mirror ad14e ad12e
+  zpool create free ad12h

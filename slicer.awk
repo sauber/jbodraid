@@ -37,7 +37,7 @@
 
 END{
   # Default size of root disk is 1GB
-  if ( rootsize == "" ) rootsize=1024*1024*1024/512;
+  if ( rootsize == "" ) rootsize=10*1024*1024*1024/512;
   # Default size of swap disk is 0
   if ( swapsize == "" ) swapsize=0;
   # Generate initial cache of free disk space
