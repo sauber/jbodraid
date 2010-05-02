@@ -1,25 +1,25 @@
 DISK SLICE TABLE
-Disk name,     a    b    c    d    e    f    g    h
-Disk ad14,  20971520    0 976771055 488397152 467402367    0    0    0
-Disk ad12,  20971520    0 1953525168 488397152 467402367    0    0 976754113
-Disk  ad8,     0    0 488397168 488397152    0    0    0    0
-Disk  ad6,     0    0 488397168 488397152    0    0    0    0
+Disk name,       a      b      c      d      e      f      g      h
+Disk ad14,   10240      0 476938 238474 228223      0      0      0
+Disk  ad6,   10240   1024 953869 238474 228223      0      0 475907
+Disk  ad8,       0      0 238475 238474      0      0      0      0
+Disk ad12,       0      0 238475 238474      0      0      0      0
 
 ROOT VOLUME TABLE
-  root, layout=gmirror, numslice=2, slicesize=20971520, volsize=20971520
-        slices=ad12a ad14a
+  root, layout=gmirror, numslice=2, slicesize=10240, volsize=10240
+        slices=ad6a ad14a
 
 SWAP VOLUME TABLE
-  swap, layout=concat, numslice= slicesize=*, volsize=0
-        slices=
+  swap, layout=concat, numslice=1 slicesize=*, volsize=1024
+        slices=ad6b 
 
 DATA VOLUME TABLE
-  data1, layout=raidz1, numslice=4, slicesize=488397152, volsize=1465191456
+  data1, layout=raidz1, numslice=4, slicesize=238474, volsize=715422
          slices=ad14d ad6d ad8d ad12d 
-  data2, layout=mirror, numslice=2, slicesize=467402367, volsize=467402367
-         slices=ad14e ad12e 
+  data2, layout=mirror, numslice=2, slicesize=228223, volsize=228223
+         slices=ad14e ad6e 
 
 FREE VOLUME TABLE
-  root, layout=concat, numslice=1 slicesize=*, volsize=976754113
-        slices=ad12h 
+  root, layout=concat, numslice=1 slicesize=*, volsize=475907
+        slices=ad6h 
 

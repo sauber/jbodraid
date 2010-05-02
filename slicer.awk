@@ -3,6 +3,9 @@
 # Soren, May 2009
 # Original script my Magnus Svavarsson
 
+# Invoke example:
+#   nawk -v rootsize=10240 -v swapsize=1024 -f slicer.awk < disklist
+
 # Program flow
 #  - Read in disk sizes
 #  - Put root on two largest disks, slice a
@@ -30,16 +33,16 @@
   diskslice[$1,"e"]=0;     # Data
   diskslice[$1,"f"]=0;     # Data
   diskslice[$1,"g"]=0;     # Data
-  diskslice[$1,"h"]=$2-16; # Free space, first 16 sectors for bootblock
+  diskslice[$1,"h"]=$2-1 ; # Free space, first 1 MB for bootblock
   diskname[NR]=$1;         # Name of disk by position
   DiskNr=NR;               # Total number of disks available
 }
 
 END{
-  # Default size of root disk is 1GB
-  if ( rootsize == "" ) rootsize=10*1024*1024*1024/512;
-  # Default size of swap disk is 0
-  if ( swapsize == "" ) swapsize=0;
+  # Default size of root disk is 10GB
+  if ( rootsize == "" ) rootsize=10*1024;
+  # Default size of swap disk is 1GB
+  if ( swapsize == "" ) swapsize=1024;
   # Generate initial cache of free disk space
   diskfreesort();
   # Assign disks to root, data and swap volumes
@@ -64,7 +67,7 @@ function diskfreesort(forswap,     free,i,d,j,m,n,e) {
   for (i in diskname) {
     delete sorted[i];
     d=diskname[i];
-    minsize=64*1024*1024/512
+    minsize=64;
     if ( diskslice[d,"h"] > minsize ) {     # h must have enough free space
       # Check that at least one slice is free
       if ( diskslice[d,"d"] == 0 ) free[d]=diskslice[d,"h"];
@@ -271,11 +274,11 @@ function freespace(     i,d,f,volsize) {
 #
 function printslicetable(     i,d) {
   print "DISK SLICE TABLE";
-  printf("Disk name,  %4s %4s %4s %4s %4s %4s %4s %4s\n",
+  printf("Disk name,  %6s %6s %6s %6s %6s %6s %6s %6s\n",
          "a","b","c","d","e","f","g","h");
   for (i in diskname){
     d=diskname[i];
-    printf("Disk %4s,  %4d %4d %4d %4d %4d %4d %4d %4d\n",
+    printf("Disk %4s,  %6d %6d %6d %6d %6d %6d %6d %6d\n",
       d,
       diskslice[d,"a"],
       diskslice[d,"b"],
